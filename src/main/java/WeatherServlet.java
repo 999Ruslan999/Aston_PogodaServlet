@@ -1,3 +1,4 @@
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,9 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +22,22 @@ import java.util.regex.Pattern;
 // После этого в браузер выведется информация о погоде на неделю
 
 public class WeatherServlet extends HttpServlet {
+
+
+    private Connection connection;
+
+    public void DatabaseConnection() throws SQLException {
+        String url = "jdbc:postgresql://localhost:5433/Pogoda";
+        String lastname = "postgres";
+        String password = "password";
+
+        connection = DriverManager.getConnection(url, lastname, password);
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
 
     // Регулярное выражение, что бы выводить только дату.
     private static final Pattern DATE_PATTERN = Pattern.compile("\\d{2}\\.\\d{2}");
@@ -61,8 +81,9 @@ public class WeatherServlet extends HttpServlet {
 
         }
     }
+
     // Метод получает страницу с сайта и возвращает ее в виде объекта
-    private static Document getPage() throws IOException {
+        public Document getPage() throws IOException {
         String url = "http://www.pogoda.spb.ru/";
         Document page = Jsoup.parse(new URL(url), 3000);
         return page;
@@ -76,7 +97,7 @@ public class WeatherServlet extends HttpServlet {
     // Если совпадение не найдено, то метод выбрасывает исключение с сообщением "Can't extract data from string!".
     private static String getDateFromString(String stringDate) throws Exception {
         Matcher matcher = DATE_PATTERN.matcher(stringDate);
-        if(matcher.find()) {
+        if (matcher.find()) {
             return matcher.group();
         }
         throw new Exception("Can't extract data from string!");
@@ -89,10 +110,10 @@ public class WeatherServlet extends HttpServlet {
     // Если содержит, то количество значений для вывода устанавливается в 2
     private static int printFourValues(Elements values, int index, PrintWriter writer) {
         int iterationCount = 4;
-        if(index == 0) {
+        if (index == 0) {
             Element valueLn = values.get(3);
             boolean isMorning = valueLn.text().contains("День");
-            if(isMorning) {
+            if (isMorning) {
                 iterationCount = 2;
             }
         }
@@ -106,4 +127,6 @@ public class WeatherServlet extends HttpServlet {
         }
         return iterationCount;
     }
+
+
 }
