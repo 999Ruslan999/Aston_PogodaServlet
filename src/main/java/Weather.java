@@ -1,36 +1,33 @@
 import javax.persistence.*;
 
-    @Entity
-    @Table(name = "weather_forecast")
+
+
     public class Weather {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
 
-        @Column(name = "date")
+        private int id;
+
+
         private String date;
 
-        @Column(name = "phenomenon")
+
         private String phenomenon;
 
-        @Column(name = "temperature")
+
         private String temperature;
 
-        @Column(name = "pressure")
+
         private String pressure;
 
-        @Column(name = "humidity")
         private String humidity;
 
-        @Column(name = "wind")
         private String wind;
 
 
         public Weather() {
         }
 
-        public Weather(Long id, String date, String phenomenon, String temperature, String pressure, String humidity, String wind) {
+        public Weather(int id, String date, String phenomenon, String temperature, String pressure, String humidity, String wind) {
             this.id = id;
             this.date = date;
             this.phenomenon = phenomenon;
@@ -40,11 +37,11 @@ import javax.persistence.*;
             this.wind = wind;
         }
 
-        public Long getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(Long id) {
+        public void setId(int id) {
             this.id = id;
         }
 

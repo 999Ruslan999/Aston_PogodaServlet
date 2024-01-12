@@ -24,21 +24,6 @@ import java.util.regex.Pattern;
 public class WeatherServlet extends HttpServlet {
 
 
-    private Connection connection;
-
-    public void DatabaseConnection() throws SQLException {
-        String url = "jdbc:postgresql://localhost:5433/Pogoda";
-        String lastname = "postgres";
-        String password = "password";
-
-        connection = DriverManager.getConnection(url, lastname, password);
-    }
-
-    public Connection getConnection() {
-        return connection;
-    }
-
-
     // Регулярное выражение, что бы выводить только дату.
     private static final Pattern DATE_PATTERN = Pattern.compile("\\d{2}\\.\\d{2}");
 
